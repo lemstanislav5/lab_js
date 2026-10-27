@@ -8,7 +8,7 @@
         /* Базовые стили для текста */
         h2, p, div {
             color: black;
-            background-color: white;
+            background-color: #5c5ced;
             padding: 10px;
             margin: 5px 0;
             cursor: pointer;
@@ -21,32 +21,39 @@
 </head>
 <body>
 
-    <h2>ДОСТУП К СВОЙСТВАМ И МЕТОДАМ</h2>
+    <h2 id="header">ДОСТУП К СВОЙСТВАМ И МЕТОДАМ</h2>
     <p>Коллекция all</p>
-    <div>Метод getElementById()</div>
+    <div id="block">Метод getElementById()</div>
 
     <script>
         // Получаем элементы по их тегам
-        const header = document.querySelector('h2');
-        const paragraph = document.querySelector('p');
-        const block = document.querySelector('div');
+        const header = document.getElementById('header');
+        console.log(header);
+        const paragraph = Array.from(document.all).find(el => el.tagName === 'P');
+        console.log(paragraph);
+        const block = document.getElementById('block');
+        console.log(block);
 
         // 1. Клик по первой строке (изменение цвета букв с чёрного на белый и наоборот)
         header.addEventListener('click', function() {
             if (this.style.color === 'white') {
                 this.style.color = 'black';
+                this.style.backgroundColor = '#5c5ced';
             } else {
                 this.style.color = 'white';
+                this.style.backgroundColor = '#ebdd68';
             }
         });
 
 
         // 2. Клик по второй строке (пример: изменение фона)
         paragraph.addEventListener('click', function() {
-            if (this.style.backgroundColor === 'yellow') {
-                this.style.backgroundColor = 'white';
+            if (this.style.color === 'white') {
+                this.style.color = 'black';
+                this.style.backgroundColor = '#5c5ced';
             } else {
-                this.style.backgroundColor = 'yellow';
+                this.style.color = 'white';
+                this.style.backgroundColor = '#ebdd68';
             }
         });
         
@@ -54,12 +61,13 @@
         // Поскольку внутри стрелочных функций ключевое слово this теряет контекст элемента, его нужно заменить на e.currentTarget
 
         block.addEventListener('click', (e) => {
-            if (e.currentTarget.style.backgroundColor === 'black') {
-                e.currentTarget.style.backgroundColor = 'white';
-                e.currentTarget.style.color = 'black';
+            console.log(e.currentTarget.style.backgroundColor)
+            if (e.currentTarget.style.backgroundColor === 'rgb(92, 92, 237)') {
+                e.currentTarget.style.backgroundColor = '#ebdd68';
+                e.currentTarget.style.color = 'white';
             } else {
-                e.currentTarget.style.backgroundColor = 'black';
-                e.currentTarget.style.color = 'lime';
+                e.currentTarget.style.backgroundColor = '#5c5ced';
+                e.currentTarget.style.color = 'black';
             }
         });
     </script>
