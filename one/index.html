@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изменение цвета при щелчке</title>
+    <style>
+        /* Базовые стили для текста */
+        h2, p, div {
+            color: black;
+            background-color: white;
+            padding: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            display: inline-block;
+            width: 100%;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>ДОСТУП К СВОЙСТВАМ И МЕТОДАМ</h2>
+    <p>Коллекция all</p>
+    <div>Метод getElementById()</div>
+
+    <script>
+        // Получаем элементы по их тегам
+        const header = document.querySelector('h2');
+        const paragraph = document.querySelector('p');
+        const block = document.querySelector('div');
+
+        // 1. Клик по первой строке (изменение цвета букв с чёрного на белый и наоборот)
+        header.addEventListener('click', function() {
+            if (this.style.color === 'white') {
+                this.style.color = 'black';
+            } else {
+                this.style.color = 'white';
+            }
+        });
+
+
+        // 2. Клик по второй строке (пример: изменение фона)
+        paragraph.addEventListener('click', function() {
+            if (this.style.backgroundColor === 'yellow') {
+                this.style.backgroundColor = 'white';
+            } else {
+                this.style.backgroundColor = 'yellow';
+            }
+        });
+        
+        // 3. Клик по третьей строке (пример: изменение и фона, и букв)
+        // Поскольку внутри стрелочных функций ключевое слово this теряет контекст элемента, его нужно заменить на e.currentTarget
+
+        block.addEventListener('click', (e) => {
+            if (e.currentTarget.style.backgroundColor === 'black') {
+                e.currentTarget.style.backgroundColor = 'white';
+                e.currentTarget.style.color = 'black';
+            } else {
+                e.currentTarget.style.backgroundColor = 'black';
+                e.currentTarget.style.color = 'lime';
+            }
+        });
+    </script>
+
+</body>
+</html>
