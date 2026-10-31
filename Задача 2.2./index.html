@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Задача 2.2</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        /* родительский объект из условия */
+        .card {
+            text-align: center;
+            border: 2px dashed #ccc;
+            padding: 20px;
+            width: 300px;
+            cursor: pointer;
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .card p {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+            transition: color 0.3s ease; 
+        }
+    </style>
+</head>
+<body>
+
+<!-- Родительский объект -->
+<div class="card" id="cardContainer">
+    <img id="mainImage" src="https://storage.yandexcloud.net/yac-wh-sb-prod-s3-media-03005/uploads/article/files/51721b3cac9d1b7635b04cbbabadc168.webp" alt="Собака">
+    <p id="caption">Мощная собака</p>
+</div>
+
+<script>
+    // Данные для замены изображения и подписи
+    const newImageSrc = "https://storage.yandexcloud.net/yac-wh-sb-prod-s3-media-03005/uploads/article/files/f9be389e5140420426dcddf6c04da45e.webp"; // Другая картинка
+    const newCaptionText = "Две другие шикарные собаки!";
+    
+    // Получаем родительский объект
+    const container = document.getElementById('cardContainer');
+
+    // Вешаем обработчик на родителя 
+    container.addEventListener('click', function(event) {
+        
+        // 1. Если кликнули по подписи (p)
+        if (event.target.tagName === 'P') {
+            // Меняем цвет. Если цвет не задан, ставим красный, иначе чередуем
+            if (event.target.style.color === 'red') {
+                event.target.style.color = 'blue';
+            } else {
+                event.target.style.color = 'red';
+            }
+        }
+        
+        // 2. Если кликнули по изображению (img)
+        else if (event.target.tagName === 'IMG') {
+            // Меняем картинку
+            event.target.src = newImageSrc;
+            
+            // Меняем подпись (находим её внутри родителя)
+            const caption = container.querySelector('#caption');
+            caption.textContent = newCaptionText;
+        }
+    });
+</script>
+
+</body>
+</html>

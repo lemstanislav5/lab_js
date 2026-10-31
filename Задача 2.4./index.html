@@ -1,0 +1,33 @@
+<html>
+<head>
+    <title>Первая страница</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+    <h2>Представьтесь, пожалуйста</h2>
+    <form name=f1 method="post" ACTION="">
+        Имя <input type="text" name="name"><br>
+        Возраст <input type="text" name="age"><br><br>
+        <input type="submit" value="ВВОД" onclick="Proverka()">
+    </form>
+</body>
+<script>
+    function Proverka() {
+        im = document.f1.name.value;
+        vozr = document.forms[0].elements[1].value;
+        st = "";
+        if (im == "")
+            st = "имя\n";
+        if (vozr == "")
+            st += "возраст";
+        if (st == "") {
+            document.f1.action = "prim3_1.php";
+            return true;
+        } else { //отмена передачи на веб-сервер
+            str = "Введите:\n" + st;
+            alert(str);
+            return false;
+        }
+    }
+</script>
+</html>

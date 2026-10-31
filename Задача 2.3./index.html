@@ -1,0 +1,73 @@
+<html>
+<head>
+    <title>Редакция на событие</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+        h1 {
+            color: #ff00ff;
+            text-align: center;
+        }
+        #el3 {
+            position: absolute;
+            left: 50px;    
+            top: 200px;    
+            width: 300px;  
+            height: 100px; 
+            background-color: blue;
+        }
+        #el4 {
+            position: relative;
+            left: 50px;    
+            top: 25px;     
+            width: 200px;  
+            height: 50px;  
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body id="el1" bgcolor="#aaaaaa" onclick="rodEl()" style="height:600px">
+    <h1 id="el2" onclick="H()">=== Цвет ===</h1>
+    <div id="el3" onclick="D()">
+        <div id="el4" style="background-color:yellow" onclick="D_2(this)">
+        </div>
+    </div>
+</body>
+<script>
+    // Функция запускается при щелчке мышкой по любой точке документа 
+    // (остается без изменений, так как это самый верхний уровень)
+    function rodEl() { 
+        let color = document.all.el1.bgColor;
+        if (color == "#777777") { color = "#777777"; }
+        else { color = "#aaaaaa"; }
+        document.all.el1.bgColor = color;
+    }
+    function H() { // Изменение цвета слова "Цвет"
+        window.event.cancelBubble = true; // Предотвращаем всплытие
+        let color = document.all.el2.style.color;
+        if (color == "rgb(0, 0, 170)" || color == "rgb(255, 0, 255)" || color == "#ff00ff") { 
+            color = "#00ffff";
+        } else {
+            color = "#aa00aa";
+        }
+        document.all.el2.style.color = color;
+    }
+
+    function D() { // Изменение цвета внешнего прямоугольника
+        window.event.cancelBubble = true; // Предотвращаем всплытие
+        let color = document.all.el3.style.backgroundColor;
+        if (color == "#0000ff" || color == "blue") { color = "red"; } // Добавлено "blue" для надежности
+        else { color = "green"; }
+        document.all.el3.style.backgroundColor = color;
+    }
+
+    function D_2(el) { // Изменение цвета внутреннего прямоугольника
+        window.event.cancelBubble = true; // Предотвращаем всплытие
+        let color = el.style.backgroundColor;
+        console.log(color);
+        if (color == "#00ffff" || color == "rgb(255, 0, 255)" || color == "#ff00ff") { color = "#00ffff"; }
+        else { color = "red"; }
+        el.style.backgroundColor = color;
+    }
+
+</script>
+</html>

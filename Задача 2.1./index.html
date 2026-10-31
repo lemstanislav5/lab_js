@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>События</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            line-height: 1.6;
+        }
+        
+        h1 {
+            font-size: 24pt;
+            margin-bottom: 20px;
+        }
+
+        .interactive-text {
+            font-size: 16pt;
+            margin: 15px 0;
+            padding: 5px 10px;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s, font-size 0.2s;
+        }
+
+        .changed-line2 {
+            font-size: 48pt !important;
+            color: white !important;
+            background-color: #00bfff !important; /* Голубой цвет */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Пять событий с мышкой</h1>
+
+    <!-- Вторая строка -->
+    <div id="line2" class="interactive-text" onclick="toggleLine2()">
+        Щёлкните по мне мышкой
+    </div>
+
+    <br>
+
+    <!-- Третья строка -->
+    <div id="line3" class="interactive-text" onmousedown="pressLine3()" onmouseup="releaseLine3()">
+        На этом тексте нажмите, подержите и отпустите левую кнопку мышки
+    </div>
+
+    <br>
+
+    <!-- Четвёртая строка -->
+    <div id="line4" class="interactive-text" onmouseenter="enterLine4()" onmouseleave="leaveLine4()">
+        Медленно проведите курсором мышки по этой надписи
+    </div>
+
+    <script>
+        // Логика для 2 строки 
+        function toggleLine2() {
+            const line2 = document.getElementById('line2');
+            line2.classList.toggle('changed-line2');
+        }
+
+        //  Логика для 3 строки 
+        function pressLine3() {
+            const line3 = document.getElementById('line3');
+            line3.style.backgroundColor = 'green';
+            line3.style.color = 'white'; // Белый текст для лучшей читаемости на зеленом фоне
+        }
+
+        function releaseLine3() {
+            const line3 = document.getElementById('line3');
+            line3.style.backgroundColor = 'yellow';
+            line3.style.color = 'black'; // Черный текст для желтого фона
+        }
+
+        //  Логика для 4 строки 
+        function enterLine4() {
+            const line4 = document.getElementById('line4');
+            line4.style.backgroundColor = 'red';
+            line4.style.color = 'white'; // Белый текст для красного фона
+        }
+
+        function leaveLine4() {
+            const line4 = document.getElementById('line4');
+            line4.style.backgroundColor = '#00bfff'; // Голубой цвет
+            line4.style.color = 'white'; // Белый текст для голубого фона
+        }
+    </script>
+
+</body>
+</html>
