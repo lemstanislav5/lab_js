@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Заказ мебели</title>
+    <style>
+        body { font-family: sans-serif; }
+        .form-group { margin-bottom: 15px; }
+        label { display: inline-block; width: 150px; }
+    </style>
+</head>
+<body>
+    <h1>Заказ мебели</h1>
+    
+    <!-- Форма отправляет данные методом POST на файл order.php -->
+    <div>
+        
+        <div class="form-group">
+            <label>Изделие:</label>
+            <select name="product" onchange=selectProduct(this)>
+                <option value=""></option>
+                <option value="Шкаф">Шкаф</option>
+                <option value="Стол">Стол</option>
+                <option value="Сервант">Сервант</option>
+                <option value="Стул">Стул</option>
+                <option value="Диван">Диван</option>
+                <option value="Вешалка">Вешалка</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Материал:</label>
+            <select name="material" onchange=selectMaterial(this)>
+                <option value=""></option>
+                <option value="Дуб">Дуб</option>
+                <option value="Орех">Орех</option>
+                <option value="Бук">Бук</option>
+                <option value="Липа">Липа</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Количество:</label>
+            <!-- type="number" поможет браузеру, но проверку все равно делаем в PHP -->
+            <input type="number" name="quantity" min="1" onchange=selectAmount(this)>
+        </div>
+
+        <button type="submit" onclick=sendData()>Отправить заказ</button>
+    </div>
+</body>
+<script>
+    const data = {
+        product: undefined, 
+        material: undefined, 
+        amount: undefined
+    };
+    const selectProduct = el => data.product = el.value;
+    const selectMaterial = el => data.material = el.value;
+    const selectAmount = el => data.amount = el.value;
+
+    async function sendData() {
+        let error = "";
+        if (data.product == undefined) {
+            error = "Выберете продукт!";
+        } 
+        if (data.material == undefined) {
+            error += " Выберете материал!";
+        } 
+        if (data.amount == undefined) {
+            error += " Введите нужно количество!";
+        }
+        if (error !== "") return alert(error);
+        console.log(JSON.stringify(data))
+
+        fetch('http://localhost:8000/order.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'data=' + encodeURIComponent(JSON.stringify(data))
+        })
+       .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка сети или сервера');
+            }
+            // Декодируем JSON, который вернул PHP
+            return response.json(); 
+        })
+        .then(result => {
+            // 2. РАБОТАЕМ С ДАННЫМИ ТУТ
+            // В переменной result теперь лежит полноценный JS-объект
+            console.log('Ответ от сервера:', result); 
+            
+            if (result.status === 'success') {
+                alert(result.message); // "Заказ оформлен"
+            } else {
+                alert('Ошибка: ' + result.message); // "Данные введены не в полном объеме!"
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+</script>
+</html>

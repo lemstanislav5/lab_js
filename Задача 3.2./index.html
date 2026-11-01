@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Тригонометрические функции</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            font-size: 18px;
+        }
+        .container {
+            width: 400px;
+        }
+        h2 {
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 20px;
+        }
+        .warning {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .row {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .row label {
+            width: 150px;
+        }
+        input[type="text"] {
+            width: 60px;
+            text-align: center;
+        }
+        select {
+            width: 120px;
+            text-align: center;
+        }
+        button {
+            padding: 5px 15px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 22px;
+            font-family: "Times New Roman", serif;
+        }
+        #error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Тригонометрические функции</h2>
+    
+    <div class="warning">Угол должен быть больше нуля и меньше 90 градусов</div>
+
+    <div class="row">
+        <label for="angleInput">Угол в градусах</label>
+        <input type="text" id="angleInput" value="30" oninput="validateInput()">
+    </div>
+
+    <div class="row">
+        <label for="funcSelect">Функция...</label>
+        <select id="funcSelect" onchange="validateInput()">
+            <option value="sin">синус</option>
+            <option value="cos">косинус</option>
+            <option value="tan">тангенс</option>
+        </select>
+    </div>
+
+    <button onclick="calculate()">Вычислить</button>
+
+    <div id="error"></div>
+    <div id="result"></div>
+</div>
+
+<script>
+    // Функция для проверки ввода 
+    function validateInput() {
+        let angleInput = document.getElementById('angleInput');
+        let funcSelect = document.getElementById('funcSelect');
+        let errorDiv = document.getElementById('error');
+        let resultDiv = document.getElementById('result');
+        
+        let angleStr = angleInput.value;
+        
+        // Очищаем предыдущие результаты
+        errorDiv.textContent = "";
+        resultDiv.textContent = "";
+
+        // Проверка на пустоту
+        if (angleStr.trim() === "") {
+            errorDiv.textContent = "Введите значение угла.";
+            return false;
+        }
+
+        // Проверка на число
+        let angle = parseFloat(angleStr);
+        if (isNaN(angle)) {
+            errorDiv.textContent = "Введите корректное число.";
+            return false;
+        }
+
+        // Проверка диапазона (0 < угол < 90)
+        if (angle <= 0 || angle >= 90) {
+            errorDiv.textContent = "Угол должен быть больше 0 и меньше 90.";
+            return false;
+        }
+
+        return true;
+    }
+
+    // Основная функция вычисления
+    function calculate() {
+        // Проверяем ввод перед вычислением
+        if (!validateInput()) {
+            return;
+        }
+
+        let angleInput = document.getElementById('angleInput');
+        let funcSelect = document.getElementById('funcSelect');
+        let resultDiv = document.getElementById('result');
+
+        let angleDegrees = parseFloat(angleInput.value);
+        let funcName = funcSelect.value; // Получаем "sin", "cos" или "tan"
+
+        // Перевод градусов в радианы
+        // Формула: радианы = градусы * PI / 180
+        let angleRadians = angleDegrees * Math.PI / 180;
+
+        // Формирование строки, как указано в задании
+        // Math.sin, Math.cos, Math.tan.
+        
+        let evalString = "Math." + funcName + "(" + angleRadians + ")";
+        
+        // Вычисление математичесского выражения
+        let resultValue = eval(evalString);
+
+        // Округляем если результат очень близок к 0
+        resultValue = Math.round(resultValue * 10000) / 10000;
+
+        // Формирование красивого вывода 
+        let displayName = "";
+        if (funcName === "sin") displayName = "sin";
+        if (funcName === "cos") displayName = "cos";
+        if (funcName === "tan") displayName = "tan"; 
+
+        // Выводим результат в формате: sin( 30^0 ) = 0.5
+        resultDiv.innerHTML = displayName + "( " + angleDegrees + "<sup>0</sup> ) = " + resultValue;
+    }
+</script>
+
+</body>
+</html>
