@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        select{
+            margin-left: -100px;
+            width: 200px;
+            left: 50%;
+            display: block;
+            position: relative;
+            height: 40px;
+        }
+        #gallery{
+            left: 50%;
+            display: block;
+            position: relative;
+            margin-left: -200px;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        <select id="simg">
+            <option value=""></option>
+        </select>
+    </p>
+    <div id="gallery"></div>
+</body>
+<script>
+    const arr = ["01", "02", "03", "04", "05", "06"];
+    const photo = new Array();
+    arr.forEach(el => {
+        photo[el] = new Image(400,550); //элемент массива - объект
+        photo[el].src = "./images/" + el + ".jpg"; //свойство объекта - имя файла с рисунком
+    });
+    console.log(photo);
+    
+    // 2. Находим нужный тег select по его id
+    const selectElement = document.getElementById('simg');
+
+    Object.keys(photo).forEach((key) => {
+        // В переменную key по очереди попадает каждый текстовый ключ
+        console.log(`Ключ: ${key}`); 
+        // Создаем новый тег <option>
+        const option = document.createElement('option');
+        // Задаем ему атрибут value и текст внутри тега
+        option.value = key;
+        option.textContent = key;
+        // Добавляем созданный option внутрь select
+        selectElement.appendChild(option);
+    });
+    const gallery = document.getElementById('gallery');
+    // Правильно: 'change' вместо 'onchange'
+    selectElement.addEventListener('change', (event) => {
+        gallery.replaceChildren(photo[event.target.value]);
+    });
+
+</script>
+<!-- 01.jpg  02.jpg  03.jpg  04.jpg  05.jpg  06.jpg  bludo.png -->
+</html>
