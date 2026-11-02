@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Элипс</title>
+    <style>
+        body{
+            background-color: azure;
+        }
+        .field-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="400" height="400"></canvas>
+    <div class="field-wrapper">
+        <label for="horizontal">горизонтальная а=</label>
+        <input type="text" id="horizontal" name="horizontal" value="40">
+         <label for="vertical">вертикальная b=</label>
+        <input type="text" id="vertical" name="vertical" value="80">
+        <button onclick=addElips()>Нарисовать</button>
+    </div>
+<script>
+  const canvas = document.getElementById('myCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  function init () {
+    ctx.fillStyle = '#fff'; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Рисуем горизонтальную линию 
+    ctx.beginPath();
+    ctx.moveTo(0, 200);
+    ctx.lineTo(400, 200);
+    ctx.setLineDash([10, 5]); // [длина штриха, длина пропуска между штрихами] 
+    ctx.lineWidth = 3; // толщина линии
+    ctx.strokeStyle = '#000'; // Цвет линии
+    ctx.stroke();
+
+    // Рисуем вертикальную линию 
+    ctx.beginPath();
+    ctx.moveTo(200, 0);
+    ctx.lineTo(200, 400);
+    ctx.setLineDash([10, 5]); // [длина штриха, длина пропуска между штрихами] 
+    ctx.lineWidth = 3; // толщина линии
+    ctx.strokeStyle = '#000'; // Цвет линии
+    ctx.stroke();
+  }
+  function addElips() {
+    init ();
+    // Параметры эллипса: центр (x, y), большая и малая полуоси
+    const centerX = 200;
+    const centerY = 200;
+    const radiusX = parseInt(document.getElementById("horizontal").value);  // Горизонтальная полуось (а)
+    const radiusY = parseInt(document.getElementById("vertical").value);  // Вертикальная полуось (b)
+    console.log(typeof radiusY)
+
+    ctx.beginPath();
+    // Аргументы: x, y, radiusX, radiusY, rotation, startAngle, endAngle
+    ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, 2 * Math.PI);
+
+    ctx.setLineDash([]); // Возвращаем возможность рисовать прямой линией
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#000000';
+    ctx.stroke();
+  }
+  
+
+
+
+</script>
+
+</body>
+</html>
