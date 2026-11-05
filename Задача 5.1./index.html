@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Движение квадрата по кругу</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: #f0f0f0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Цветной квадрат */
+        #square {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #009714;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="square"></div>
+
+    <script>
+        const square = document.getElementById('square');
+        
+        // Параметры окружности
+        const R = 200; // Радиус круга в пикселях
+        let t = 0;     // Параметр времени (угол в радианах)
+        const speed = 0.015; // Скорость вращения
+
+        // Точка центра экрана, вокруг которой будет вращаться квадрат
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        function animate() {
+            // Параметрические уравнения окружности
+            // Отнимаем половину размера квадрата (25px), чтобы он центрировался по траектории
+            const x = centerX + R * Math.cos(t) - 25;
+            const y = centerY + R * Math.sin(t) - 25;
+
+            // Применяем вычисленные координаты к стилям
+            square.style.left = x + 'px';
+            square.style.top = y + 'px';
+
+            // Увеличиваем угол для следующего кадра
+            t += speed;
+
+            // Сбрасываем t при полном обороте (2 * Math.PI), чтобы избежать переполнения
+            if (t > 2 * Math.PI)  t = 0;
+
+            // requestAnimationFrame обеспечивает плавную анимацию 60fps
+            requestAnimationFrame(animate);
+        }
+
+        // Запуск анимации
+        animate();
+    </script>
+</body>
+</html>
