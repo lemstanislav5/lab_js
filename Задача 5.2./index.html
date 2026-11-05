@@ -1,0 +1,89 @@
+<html>
+<head>
+   <title>Перетаскивание квадрата</title>
+   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+   <style>
+      /* Стили для серого контейнера */
+      #container {
+         position: relative; /* Важно: чтобы дочерний absolute позиционировался относительно него */
+         width: 500px;
+         height: 500px;
+         background-color: gray;
+         margin: 20px auto; /* Для центрирования на странице */
+      }
+      /* Стили для красного квадрата */
+      #kv {
+         position: absolute;
+         left: 10px;
+         top: 10px;
+         width: 100px;
+         height: 100px;
+         background-color: red;
+      }
+   </style>
+</head>
+<body onload="init()">
+   <h2 align="center" style="color:#ff00ff">
+      Перетаскивание квадрата мышкой</h2>
+   <h3 align="center">
+      Перетащите красный квадрат внутри серой области</h3>
+   
+   <!-- Серый контейнер 500x500 -->
+   <div id="container">
+      <!-- Красный квадрат внутри контейнера -->
+      <div id="kv"></div>
+   </div>
+
+</body>
+<script>
+   var flag = false;
+   // Размеры квадратов (для удобства и расчетов)
+   var kvSize = 100; 
+   var contSize = 500;
+
+   function init() {
+      // Получаем элементы по ID (современный метод вместо document.all)
+      var kvElement = document.getElementById('kv');
+      
+      kvElement.onmousemove = dragIt;
+      kvElement.onmousedown = zachvat;
+      kvElement.onmouseup = osvobodi;
+   }
+
+   function dragIt(event) {
+      if (flag) {
+         var kvElement = document.getElementById('kv');
+         
+         // Вычисляем новые координаты с учетом смещения курсора (центр квадрата)
+         // event.clientX - 25 берет координату относительно окна браузера.
+         // Чтобы привязать к контейнеру, вычитаем отступ контейнера (left/top)
+         var contRect = document.getElementById('container').getBoundingClientRect();
+         
+         var newX = event.clientX - contRect.left - 25;
+         var newY = event.clientY - contRect.top - 25;
+
+         // --- ОГРАНИЧЕНИЕ ПЕРЕМЕЩЕНИЯ ВНУТРИ СЕРОГО КВАДРАТА ---
+         // Проверка по левой и верхней границе
+         if (newX < 0) newX = 0;
+         if (newY < 0) newY = 0;
+
+         // Проверка по правой и нижней границе
+         // (размер контейнера минус размер красного квадрата)
+         if (newX > (contSize - kvSize)) newX = contSize - kvSize;
+         if (newY > (contSize - kvSize)) newY = contSize - kvSize;
+
+         // Применяем новые координаты
+         kvElement.style.left = newX + 'px';
+         kvElement.style.top = newY + 'px';
+      }
+   }
+
+   function osvobodi(event) {
+      flag = false;   // запрет на перетаскивание
+   }
+
+   function zachvat(event) {
+      flag = true;    // разрешение на перетаскивание
+   }
+</script>
+</html>
