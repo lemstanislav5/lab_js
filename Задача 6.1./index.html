@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Ввод данных для таблицы</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: inline-block; width: 200px; }
+        input, select { padding: 5px; }
+        .error { color: red; font-size: 14px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h2>Настройка таблицы тригонометрических функций</h2>
+
+    <div class="form-group">
+        <label>Начальный угол (градусы):</label>
+        <!-- Добавлен onchange для проверки сразу после ввода -->
+        <input type="text" id="startAngle" value="30" onchange="isNum(this)">
+    </div>
+
+    <div class="form-group">
+        <label>Конечный угол (градусы):</label>
+        <input type="text" id="endAngle" value="36" onchange="isNum(this)">
+    </div>
+
+    <div class="form-group">
+        <label>Шаг:</label>
+        <input type="text" id="step" value="2" onchange="isNum(this)">
+    </div>
+
+    <div class="form-group">
+        <label>Функция:</label>
+        <select id="funcType">
+            <option value="sin">sin</option>
+            <option value="cos">cos</option>
+            <option value="tan">tg</option>
+        </select>
+    </div>
+
+    <button onclick="calculate()">Вычислить</button>
+    
+    <div id="errorMsg" class="error"></div>
+
+<script>
+    // Функция проверки введенных данных
+    function isNum(fld) {
+        let t = fld.value;
+        for (let i = 0; i < t.length; i++) {
+            let ch = t.charAt(i);
+            // Проверка: символ должен быть цифрой, запятой или точкой
+            // (знак минус не включен, так как по условию углы обычно положительные
+            if ((ch < "0" || ch > "9") && (ch != "," || ch != ".")) {
+                // Исправляем на логику: если не цифра И не точка И не запятая.
+                if (ch != "," && ch != ".") {
+                    alert("Не цифра");
+                    fld.focus();
+                    fld.select();
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // Функция проверки всех полей и диапазона
+    function validateForm() {
+        let start = parseFloat(document.getElementById('startAngle').value.replace(',', '.'));
+        let end = parseFloat(document.getElementById('endAngle').value.replace(',', '.'));
+        let step = parseFloat(document.getElementById('step').value.replace(',', '.'));
+        let errorDiv = document.getElementById('errorMsg');
+
+        errorDiv.textContent = ""; // Очистка ошибок
+
+        if (isNaN(start) || isNaN(end) || isNaN(step)) {
+            errorDiv.textContent = "Ошибка: Введите числовые значения.";
+            return false;
+        }
+
+        if (step <= 0) {
+            errorDiv.textContent = "Ошибка: Шаг должен быть больше нуля.";
+            return false;
+        }
+
+        if (start >= end) {
+            errorDiv.textContent = "Ошибка: Начальный угол должен быть меньше конечного.";
+            return false;
+        }
+
+        // Проверка диапазона углов (0 < angle < 90)
+        if (start < 0 || end > 90) {
+             errorDiv.textContent = "Ошибка: Углы должны быть в диапазоне от 0 до 90 градусов.";
+             return false;
+        }
+
+        return true;
+    }
+
+    function calculate() {
+        // Проверка полей на ввод цифр
+        let inputs = document.querySelectorAll('input[type="text"]');
+        for (let inp of inputs) {
+            if (!isNum(inp)) return;
+        }
+
+        // Проверка логики
+        if (!validateForm()) return;
+
+        // Получение данных
+        let start = document.getElementById('startAngle').value;
+        let end = document.getElementById('endAngle').value;
+        let step = document.getElementById('step').value;
+        let func = document.getElementById('funcType').value;
+
+        // Формирование URL для второй страницы
+        // Параметры передаются в строке запроса
+        let url = `result.html?start=${start}&end=${end}&step=${step}&func=${func}`;
+
+        // Открытие новой страницы
+        window.open(url, "_blank");
+    }
+</script>
+
+</body>
+</html>

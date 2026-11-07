@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Результат вычислений</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+            text-align: center;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px 15px;
+        }
+        th { background-color: #f0f0f0; }
+        .sub-header { font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+    <h2>Таблица значений функции</h2>
+    
+    <!-- Создаем пустую таблицу с id="tab1" -->
+    <table id="tab1">
+        <!-- Строки будут добавлены скриптом -->
+    </table>
+
+<script>
+    // Функция для получения параметра из URL
+    function getParam(param) {
+        let searchParams = new URLSearchParams(window.location.search);
+        return searchParams.get(param);
+    }
+
+    // Получение данных из URL
+    let start = parseFloat(getParam('start').replace(',', '.'));
+    let end = parseFloat(getParam('end').replace(',', '.'));
+    let step = parseFloat(getParam('step').replace(',', '.'));
+    let funcName = getParam('func'); // sin, cos, tan
+
+    // Определение заголовка для третьего столбца
+    let headerTitle = funcName;
+    if (funcName === 'tan') headerTitle = 'tg';
+
+    // Получаем ссылку на таблицу
+    let tableRef = document.getElementById('tab1');
+
+    // --- Формирование заголовка таблицы ---
+    
+    // Добавляем первую строку заголовка (Угол, Угол, Функция)
+    let headerRow1 = tableRef.insertRow(0);
+    
+    let cell1 = headerRow1.insertCell(0);
+    cell1.innerText = "Угол";
+    cell1.colSpan = 2; // Объединяем две ячейки
+
+    let cell2 = headerRow1.insertCell(1); 
+    cell2.innerText = headerTitle;
+    cell2.rowSpan = 2; // Объединяем по вертикали
+
+    // Добавляем вторую строку заголовка (в градусах, в радианах)
+    let headerRow2 = tableRef.insertRow(1);
+    
+    let cell3 = headerRow2.insertCell(0);
+    cell3.innerText = "в градусах";
+    cell3.className = "sub-header";
+
+    let cell4 = headerRow2.insertCell(1);
+    cell4.innerText = "в радианах";
+    cell4.className = "sub-header";
+
+    // --- Заполнение таблицы данными ---
+    
+    let currentAngle = start;
+    let rowIndex = 2; // Начинаем с 3 строки, так как 0 и 1 - заголовки
+
+    while (currentAngle <= end + 0.0001) {
+        // Перевод в радианы
+        let rad = currentAngle * Math.PI / 180;
+        let val = 0;
+
+        // Вычисление функции
+        if (funcName === 'sin') val = Math.sin(rad);
+        else if (funcName === 'cos') val = Math.cos(rad);
+        else if (funcName === 'tan') val = Math.tan(rad);
+
+        // Округление
+        let radStr = rad.toFixed(4);
+        let valStr = val.toFixed(4);
+
+        // Добавление новой строки
+        let newRow = tableRef.insertRow(rowIndex);
+
+        // Добавление ячейки 1: Угол в градусах
+        let newCell0 = newRow.insertCell(0);
+        newCell0.innerText = currentAngle;
+
+        // Добавление ячейки 2: Угол в радианах
+        let newCell1 = newRow.insertCell(1);
+        newCell1.innerText = radStr;
+
+        // Добавление ячейки 3: Значение функции
+        let newCell2 = newRow.insertCell(2);
+        newCell2.innerText = valStr;
+
+        // Увеличение угла и индекса строки
+        currentAngle += step;
+        rowIndex++;
+    }
+    
+    // Выводим значение из первой строки данных (индекс 2) второй ячейки (индекс 1)
+    if (tableRef.rows.length > 2) {
+        console.log("Проверка чтения из ячейки:", document.all.tab1.rows[2].cells[1].innerText);
+    }
+</script>
+
+</body>
+</html>

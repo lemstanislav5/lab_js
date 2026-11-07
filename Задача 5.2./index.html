@@ -3,22 +3,22 @@
    <title>Перетаскивание квадрата</title>
    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
    <style>
-      /* Стили для серого контейнера */
+
       #container {
-         position: relative; /* Важно: чтобы дочерний absolute позиционировался относительно него */
+         position: relative;
          width: 500px;
          height: 500px;
-         background-color: gray;
-         margin: 20px auto; /* Для центрирования на странице */
+         background-color: rgb(128, 124, 124);
+         margin: 20px auto; 
       }
-      /* Стили для красного квадрата */
+      
       #kv {
          position: absolute;
          left: 10px;
          top: 10px;
          width: 100px;
          height: 100px;
-         background-color: red;
+         background-color: rgb(201, 7, 7);
       }
    </style>
 </head>
@@ -36,13 +36,10 @@
 
 </body>
 <script>
-   var flag = false;
-   // Размеры квадратов (для удобства и расчетов)
-   var kvSize = 100; 
-   var contSize = 500;
+   let flag = fals,kvSize = 100, contSize = 500;
 
    function init() {
-      // Получаем элементы по ID (современный метод вместо document.all)
+      // Получаем элементы по ID
       var kvElement = document.getElementById('kv');
       
       kvElement.onmousemove = dragIt;
@@ -77,13 +74,13 @@
          kvElement.style.top = newY + 'px';
       }
    }
-
+   // запрет на перетаскивание
    function osvobodi(event) {
-      flag = false;   // запрет на перетаскивание
+      flag = false;  
    }
-
+   // разрешение на перетаскивание
    function zachvat(event) {
-      flag = true;    // разрешение на перетаскивание
+      flag = true;    
    }
 </script>
 </html>
